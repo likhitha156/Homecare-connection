@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Home Care Connect | Smart Medicine Suggester</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/medical-cross.png');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating Shapes Animation */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: -50px;
+            animation-duration: 25s;
+        }
+        
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: -50px;
+            animation-duration: 30s;
+            animation-delay: 2s;
+        }
+        
+        .shape:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            top: 60%;
+            left: 10%;
+            animation-duration: 18s;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .main-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Content Section */
+        .content {
+            padding: 35px;
+        }
+
+        /* Symptom Selector */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #3b82f6;
+            font-size: 22px;
+        }
+
+        .custom-select {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .custom-select select {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .custom-select select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .custom-select i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        /* Other Symptom Input */
+        .other-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .other-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Symptom Chips */
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .chip {
+            background: #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chip i {
+            font-size: 16px;
+        }
+
+        .chip:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Buttons */
+        .suggest-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Poppins', sans-serif;
+            margin: 25px 0;
+        }
+
+        .suggest-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+        }
+
+        .secondary-btn {
+            background: linear-gradient(135deg, #64748b, #475569);
+            margin-top: 0;
+        }
+
+        .secondary-btn:hover {
+            background: linear-gradient(135deg, #475569, #334155);
+        }
+
+        /* Result Card */
+        .result-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-radius: 32px;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+            animation: slideUp 0.5s ease;
+            border: 1px solid #bbf7d0;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .result-header i {
+            font-size: 32px;
+            color: #16a34a;
+        }
+
+        .result-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #166534;
+        }
+
+        .medicine-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 24px;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .medicine-desc {
+            color: #334155;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .disclaimer {
+            background: #fef2f2;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .disclaimer i {
+            font-size: 16px;
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            margin-top: 20px;
+            text-align: center;
+            background: #fefce8;
+            padding: 15px;
+            border-radius: 24px;
+            border: 1px solid #fde047;
+        }
+
+        .emergency-section p {
+            font-size: 13px;
+            color: #854d0e;
+        }
+
+        .emergency-section a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .emergency-section a:hover {
+            text-decoration: underline;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 40px;
+            color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading p {
+            margin-top: 10px;
+            color: #64748b;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 30px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 15px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .header {
+                padding: 30px 20px;
+            }
+            .content {
+                padding: 25px;
+            }
+            .medicine-name {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-shapes">
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+
+<div class="container">
+    <div class="main-card">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1>Home Care Connect</h1>
+            <div class="tagline">Smart Symptom Checker & Medicine Suggester</div>
+        </div>
+
+        <div class="content">
+            <!-- Common Symptoms Dropdown -->
+            <div class="section-title">
+                <i class="fas fa-stethoscope"></i>
+                <span>Select Your Symptom</span>
+            </div>
+
+            <div class="custom-select">
+                <select id="symptomSelect">
+                    <option value="">-- Choose a symptom --</option>
+                    <option value="fever">🌡️ Fever</option>
+                    <option value="cold">🤧 Cold / Runny Nose</option>
+                    <option value="headache">🤕 Headache</option>
+                    <option value="cough">😷 Cough</option>
+                    <option value="sore_throat">😖 Sore Throat</option>
+                    <option value="stomach_pain">🤢 Stomach Pain</option>
+                    <option value="body_pain">💪 Body Pain</option>
+                    <option value="acidity">🔥 Acidity / Heartburn</option>
+                    <option value="nausea">🤮 Nausea</option>
+                    <option value="allergy">🌸 Allergy</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+
+            <!-- Quick Select Chips -->
+            <div class="section-title">
+                <i class="fas fa-tags"></i>
+                <span>Quick Select</span>
+            </div>
+
+            <div class="chips-container">
+                <div class="chip" onclick="selectSymptom('fever')"><i class="fas fa-temperature-high"></i> Fever</div>
+                <div class="chip" onclick="selectSymptom('cold')"><i class="fas fa-head-side-cough"></i> Cold</div>
+                <div class="chip" onclick="selectSymptom('headache')"><i class="fas fa-brain"></i> Headache</div>
+                <div class="chip" onclick="selectSymptom('cough')"><i class="fas fa-lungs"></i> Cough</div>
+                <div class="chip" onclick="selectSymptom('sore_throat')"><i class="fas fa-comment-dots"></i> Sore Throat</div>
+                <div class="chip" onclick="selectSymptom('stomach_pain')"><i class="fas fa-stomach"></i> Stomach Pain</div>
+            </div>
+
+            <!-- Main Suggestion Button -->
+            <button class="suggest-btn" onclick="getSuggestion()">
+                <i class="fas fa-magic"></i>
+                Get Medicine Suggestion
+            </button>
+
+            <hr>
+
+            <!-- Other Symptom Section (For symptoms not in list) -->
+            <div class="section-title">
+                <i class="fas fa-edit"></i>
+                <span>Don't see your symptom?</span>
+            </div>
+
+            <div class="custom-select">
+                <input type="text" id="otherSymptom" placeholder="Type your symptom here..." class="other-input">
+            </div>
+
+            <button class="suggest-btn secondary-btn" onclick="getCustomSuggestion()">
+                <i class="fas fa-search"></i>
+                Suggest for my symptom
+            </button>
+
+            <!-- Loading Animation -->
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Finding the best suggestion for you...</p>
+            </div>
+
+            <!-- Result Section -->
+            <div id="result" class="result-card">
+                <div class="result-header">
+                    <i class="fas fa-capsules"></i>
+                    <h3>Recommended Medicine</h3>
+                </div>
+                <div class="medicine-name" id="medicineName"></div>
+                <div class="medicine-desc" id="medicineDesc"></div>
+                <div class="disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>⚠️ This is for informational purposes only. Always consult a doctor before taking any medication.</span>
+                </div>
+            </div>
+
+            <!-- Emergency Helpline Section -->
+            <div class="emergency-section">
+                <p>
+                    <i class="fas fa-phone-alt"></i> 
+                    <strong>Emergency Helplines:</strong> 
+                    108 (Ambulance) | 
+                    102 (Medical Help) |
+                    <a href="tel:1800118798">104</a> (Govt. Health Helpline)
+                </p>
+                <p style="margin-top: 8px; font-size: 11px;">
+                    <i class="fas fa-hospital"></i> For medical emergencies, visit your nearest hospital immediately.
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <i class="fas fa-shield-alt"></i> Your health is our priority | © 2025 Home Care Connect
+        </div>
+    </div>
+</div>
+
+<script>
+    // Complete Medicine Database
+    const medicineDB = {
+        "fever": {
+            name: "💊 Paracetamol (Acetaminophen - 500mg)",
+            desc: "✅ Take 500mg every 4-6 hours as needed.\n✅ Do not exceed 3000mg in 24 hours.\n✅ Drink plenty of fluids and rest.\n✅ Monitor temperature regularly.\n⚠️ Seek medical attention if fever exceeds 103°F or lasts more than 3 days."
+        },
+        "cold": {
+            name: "🍵 Cetirizine (10mg) + Steam Inhalation",
+            desc: "✅ Take Cetirizine 10mg once daily at bedtime.\n✅ Perform steam inhalation 2-3 times daily.\n✅ Increase vitamin C intake (oranges, lemons).\n✅ Stay hydrated with warm fluids.\n✅ Use saline nasal drops for congestion."
+        },
+        "headache": {
+            name: "💊 Ibuprofen (200-400mg) or Aspirin",
+            desc: "✅ Take with food or milk to avoid stomach irritation.\n✅ Rest in a dark, quiet room.\n✅ Apply cold compress on forehead.\n✅ Stay hydrated - drink 6-8 glasses of water.\n⚠️ Consult doctor if headaches are severe or recurring."
+        },
+        "cough": {
+            name: "🍯 Warm Honey (1-2 tsp) + Dextromethorphan Syrup",
+            desc: "✅ Take 1-2 teaspoons of honey with warm water or ginger tea.\n✅ Use cough suppressant as directed by doctor.\n✅ Avoid cold foods, ice cream, and smoking.\n✅ Gargle with warm salt water 3 times daily.\n✅ Use a humidifier at night."
+        },
+        "sore_throat": {
+            name: "🧴 Warm Salt Water Gargle + Throat Lozenges",
+            desc: "✅ Gargle with warm salt water (1/2 tsp salt in 1 cup water) every 3-4 hours.\n✅ Use throat lozenges containing benzocaine or menthol.\n✅ Drink warm honey-lemon tea.\n✅ Rest your voice and avoid shouting.\n✅ Avoid spicy and acidic foods."
+        },
+        "stomach_pain": {
+            name: "💊 Antacid (Omeprazole 20mg / Ranitidine 150mg)",
+            desc: "✅ Take antacid 30 minutes before meals.\n✅ Avoid spicy, oily, and fried foods.\n✅ Eat small, frequent meals.\n✅ Drink coconut water or chamomile tea.\n⚠️ If pain persists or worsens, consult a doctor immediately."
+        },
+        "body_pain": {
+            name: "💊 Diclofenac Gel + Ibuprofen (200-400mg)",
+            desc: "✅ Apply pain relief gel on affected areas 2-3 times daily.\n✅ Take Ibuprofen with food.\n✅ Apply warm compress for 15-20 minutes.\n✅ Light stretching and rest.\n✅ Stay hydrated and take electrolytes."
+        },
+        "acidity": {
+            name: "💊 Antacid (Gaviscon / Digene) + Pantoprazole",
+            desc: "✅ Take antacid after meals.\n✅ Avoid lying down immediately after eating.\n✅ Reduce caffeine, alcohol, and spicy foods.\n✅ Sleep with head elevated.\n✅ Eat bananas and drink cold milk."
+        },
+        "nausea": {
+            name: "💊 Ondansetron (4mg) / Ginger Tea",
+            desc: "✅ Take anti-nausea medication as prescribed.\n✅ Sip ginger tea or peppermint tea slowly.\n✅ Eat small, bland meals like crackers or toast.\n✅ Avoid strong odors and greasy food.\n✅ Rest in a well-ventilated room."
+        },
+        "allergy": {
+            name: "💊 Loratadine (10mg) / Fexofenadine (120mg)",
+            desc: "✅ Take one tablet daily.\n✅ Avoid known allergens (dust, pollen, certain foods).\n✅ Use saline nasal spray.\n✅ Keep windows closed during high pollen seasons.\n✅ Shower after outdoor activities."
+        }
+    };
+
+    // Default response for unknown symptoms
+    const defaultMedicine = {
+        name: "🏥 Please Consult a Doctor",
+        desc: "🔍 We couldn't find an exact match for your symptom in our database.\n\n📋 What you should do:\n✅ Consult a qualified healthcare professional for proper diagnosis\n✅ Note down when the symptom started and any triggers\n✅ Track any other symptoms you notice\n✅ Do not self-medicate for unknown symptoms\n✅ Visit a nearby clinic or use teleconsultation services\n\n🚨 If symptoms are severe, visit the nearest hospital immediately."
+    };
+
+    // Function to get suggestion from dropdown
+    function getSuggestion() {
+        const select = document.getElementById("symptomSelect");
+        let symptom = select.value;
+
+        if (!symptom) {
+            alert("👨‍⚕️ Please select a symptom from the dropdown!");
+            return;
+        }
+
+        showResultWithLoading(symptom);
+    }
+
+    // Function for custom symptom input
+    function getCustomSuggestion() {
+        const customSymptom = document.getElementById("otherSymptom").value.trim();
+        
+        if (customSymptom === "") {
+            alert("👨‍⚕️ Please type your symptom first!");
+            return;
+        }
+        
+        // Check if custom symptom matches any in database (case-insensitive partial match)
+        let matchedSymptom = null;
+        const lowerCustom = customSymptom.toLowerCase();
+        
+        for (const [key, value] of Object.entries(medicineDB)) {
+            if (lowerCustom.includes(key.replace('_', ' ')) || key.replace('_', ' ').includes(lowerCustom)) {
+                matchedSymptom = key;
+                break;
+            }
+        }
+        
+        if (matchedSymptom) {
+            showResultWithLoading(matchedSymptom);
+        } else {
+            // Show default consultation message
+            showResultWithLoading(null, customSymptom);
+        }
+        
+        // Clear the input
+        document.getElementById("otherSymptom").value = "";
+    }
+
+    // Function to show result with loading animation
+    function showResultWithLoading(symptom, customSymptom = null) {
+        const loading = document.getElementById("loading");
+        const result = document.getElementById("result");
+        
+        loading.style.display = "block";
+        result.style.display = "none";
+
+        setTimeout(() => {
+            let medicine;
+            
+            if (customSymptom && !symptom) {
+                medicine = defaultMedicine;
+                document.getElementById("medicineName").innerHTML = medicine.name;
+                document.getElementById("medicineDesc").innerHTML = medicine.desc.replace("🔍 We couldn't find an exact match for your symptom in our database.", `🔍 Your symptom: "${customSymptom}"\n\n🔍 We couldn't find an exact match for this symptom in our database.\n`);
+            } else if (symptom && medicineDB[symptom]) {
+                medicine = medicineDB[symptom];
+                document.getElementById("medicineName").innerHTML = medicine.name;
+                document.getElementById("medicineDesc").innerHTML = medicine.desc;
+            } else {
+                medicine = defaultMedicine;
+                document.getElementById("medicineName").innerHTML = medicine.name;
+                document.getElementById("medicineDesc").innerHTML = medicine.desc;
+            }
+            
+            loading.style.display = "none";
+            result.style.display = "block";
+            
+            // Smooth scroll to result
+            result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }, 500);
+    }
+
+    // Function for chip click
+    function selectSymptom(symptom) {
+        const select = document.getElementById("symptomSelect");
+        select.value = symptom;
+        getSuggestion();
+    }
+
+    // Allow Enter key on dropdown and input
+    document.getElementById("symptomSelect").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            getSuggestion();
+        }
+    });
+    
+    document.getElementById("otherSymptom").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            getCustomSuggestion();
+        }
+    });
+</script>
+</body>
+</html>
